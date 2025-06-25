@@ -1,12 +1,13 @@
 import cv2
-import ollama
 import numpy as np
 import io
 from PIL import Image
+import pyrealsense2 as rs
+import ollama
 
 def describe_frame(frame):
     try:
-        # Convert OpenCV frame (BGR) to RGB and then to JPEG
+        # Convert frame (BGR) to RGB and then to JPEG
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(rgb_frame)
         img_byte_arr = io.BytesIO()
@@ -29,25 +30,33 @@ def describe_frame(frame):
         return f"Error processing frame: {str(e)}"
 
 def main():
-    # Initialize webcam
-    cap = cv2.VideoCapture(0)  # 0 is the default camera
-    if not cap.isOpened():
-        print("Error: Could not open webcam.")
-        return
+    # Configure RealSense pipeline
+    pipeline = rs.pipeline()
+    config = rs.config()
+    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)  # Color stream
 
     try:
+        # Start streaming
+        pipeline.start(config)
+        print("RealSense camera started.")
+
         while True:
-            ret, frame = cap.read()
-            if not ret:
+            # Wait for a frame
+            frames = pipeline.wait_for_frames()
+            color_frame = frames.get_color_frame()
+            if not color_frame:
                 print("Error: Could not read frame.")
-                break
+                continue
+
+            # Convert to numpy array
+            frame = np.asanyarray(color_frame.get_data())
 
             # Describe the current frame
             description = describe_frame(frame)
             print("Frame Description:", description)
 
             # Display the frame
-            cv2.imshow('Webcam Feed', frame)
+            cv2.imshow('RealSense Webcam Feed', frame)
 
             # Press 'q' to quit
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -56,9 +65,11 @@ def main():
             # Optional: Add a delay to control frame rate (e.g., 1 second)
             cv2.waitKey(1000)
 
+    except Exception as e:
+        print(f"Error: {str(e)}")
     finally:
-        # Release resources
-        cap.release()
+        # Stop streaming and release resources
+        pipeline.stop()
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":

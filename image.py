@@ -20,6 +20,6 @@ def describe_image(image_path):
 
 # Example usage
 if __name__ == "__main__":
-    image_path = "cat.png"  
+    image_path = "mmm.ply"  
     description = describe_image(image_path)
     print("Image Description:", description)
