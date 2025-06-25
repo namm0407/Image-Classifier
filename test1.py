@@ -1,3 +1,6 @@
+#it can show the vision of the webcam and give a long description.
+#it is frame by frame
+
 import cv2
 import numpy as np
 import io
