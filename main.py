@@ -15,7 +15,7 @@ def describe_frame(frame):
 
         # Send frame to LLaVA model
         response = ollama.chat(
-            model='llava:7b',
+            model='llava:13b',
             messages=[
                 {
                     'role': 'user',
