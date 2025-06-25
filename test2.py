@@ -1,4 +1,4 @@
-#have live feed but it runs in openCV
+#have live feed (runs smoothly) but it runs in openCV
 
 import cv2
 import numpy as np
