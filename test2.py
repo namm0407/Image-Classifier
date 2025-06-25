@@ -1,3 +1,5 @@
+#have live feed but it runs in openCV
+
 import cv2
 import numpy as np
 import pyrealsense2 as rs
