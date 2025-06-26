@@ -1,4 +1,4 @@
-#live feed with detector (not laggy version)
+#live feed with detector (not laggy version) with comments in terminal
 
 import cv2
 import numpy as np
@@ -96,8 +96,9 @@ class ObjectDetector:
                     obj, pos = line.split(':', 1)
                     obj = obj.strip().lower()
                     pos = pos.strip().lower()
-                    if obj and pos in ['left', 'center', 'right']:
+                    if obj and pos in ['left', 'center', 'right']: 
                         objects.append((obj, pos))
+                        print(f"Detected object: {obj} ({pos})")  # Print each object with position
             
             return objects
 
@@ -155,7 +156,7 @@ def main():
             key = cv2.waitKey(1) & 0xFF
             if key in [13, 32]:  # 13 is Enter, 32 is Space
                 break
-
+ 
     finally:
         detector.stop()
         pipeline.stop()
