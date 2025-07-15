@@ -1,4 +1,4 @@
-# Image-Classifier
+# Image-Classifier (Abandon project)
 
 ### image.py
 successfully have AI generated description for the given images.
