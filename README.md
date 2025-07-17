@@ -1,6 +1,6 @@
 # Image-Classifier (Abandon project)
 
-### image.py
+### image.py (using ollama)
 successfully have AI generated description for the given images.
 
 ### main.py
